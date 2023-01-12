@@ -13,10 +13,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cyclic.sh/dynamodb": "^0.0.33",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "module-alias": "^2.2.2",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/module-alias": "^2.0.1",
     "nodemon": "^2.0.20"
+  },
+  "_moduleAliases": {
+    "@resources": "src/resources",
+    "@db": "src/db"
   }
 }
