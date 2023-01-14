@@ -1,6 +1,6 @@
-import db from '../../db/index.js'
-
 import { v4 } from 'uuid'
+
+import db from '../../db/index.js'
 
 const Post = db.collection('posts')
 
@@ -18,8 +18,8 @@ export const create = async (data) => {
  * List all posts.
  * @returns posts
  */
-export const list = async () => {
-  const posts = await Post.list()
+export const list = async (limit, page) => {
+  const posts = await Post.list(limit, page)
   return posts
 }
 
