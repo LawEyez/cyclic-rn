@@ -19,7 +19,8 @@ export const create = async (data) => {
  * @returns posts
  */
 export const list = async (limit, page) => {
-  const posts = await Post.list()
+  let posts = await Post.list()
+  posts = await Promise.all(posts.results.map(post => Post.get(post.key)))
   return posts
 }
 
