@@ -2,7 +2,7 @@ import { v4 } from 'uuid'
 
 import db from '../../db/index.js'
 
-const Post = db.collection('posts')
+const Post = db.collection('updates')
 
 /**
  * Create new post.
@@ -19,7 +19,7 @@ export const create = async (data) => {
  * @returns posts
  */
 export const list = async (limit, page) => {
-  const posts = await Post.list(limit, page)
+  const posts = await Post.list()
   return posts
 }
 
