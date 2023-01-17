@@ -10,7 +10,13 @@ const Post = db.collection('updates')
  * @returns post
  */
 export const create = async (data) => {
-  const newPost = await Post.set(v4(), data)
+  let key = data.key || v4()
+  delete data.key
+  delete data.updated
+  delete data.created
+  // delete data.image
+
+  let newPost = await Post.set(key, data)
   return newPost
 }
 
