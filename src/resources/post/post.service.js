@@ -39,3 +39,13 @@ export const getByKey = async (key) => {
   const post = await Post.get(key)
   return post
 } 
+
+/**
+ * Get post by key.
+ * @param {*} key 
+ * @returns post
+ */
+export const deleteByKey = async (key) => {
+  const post = await Post.delete(key)
+  return post
+} 
