@@ -35,4 +35,14 @@ router.get('/', async (req, res) => {
   res.send(posts)
 })
 
+/**
+ * Delete post.
+ */
+router.delete('/delete/:key', async (req, res) => {
+  // Delete post.
+  const post = await PostService.deleteByKey(req.params.key)
+  
+  res.send(post)
+})
+
 export default router
