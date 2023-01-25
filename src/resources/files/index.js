@@ -22,9 +22,15 @@ router.post('/presign', async (req, res) => {
     Fields: { 'Content-Type': req.body.type }
   })
 
+  const presignedUrl = await getSignedUrl(s3, new GetObjectCommand({
+    Bucket: bucketName,
+    Key: fields.key,
+  }))
+
   res.send({
     url,
-    fields
+    fields,
+    presignedUrl
   })
 })
 
