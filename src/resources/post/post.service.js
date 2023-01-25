@@ -33,7 +33,7 @@ export const list = async (limit, page) => {
 
   // Generate image urls.
   posts = await Promise.all(posts.map(async post => {
-    if (post.props.image.trim().length) {
+    if (post.props.image?.trim().length) {
       post.props.image = await _getSignedUrl(post.props.image)
     }
 
@@ -52,7 +52,7 @@ export const getByKey = async (key) => {
   let post = await Post.get(key)
 
   // Generate image url.
-  if (post.props.image.trim().length) {
+  if (post.props.image?.trim().length) {
     post.props.image = await _getSignedUrl(post.props.image)
   }
 
