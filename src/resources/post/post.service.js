@@ -1,6 +1,7 @@
 import { v4 } from 'uuid'
 
 import db from '../../db/index.js'
+import { _getSignedUrl } from '../../utils/s3.js'
 
 const Post = db.collection('updates')
 
@@ -27,6 +28,14 @@ export const create = async (data) => {
 export const list = async (limit, page) => {
   let posts = await Post.list()
   posts = await Promise.all(posts.results.map(post => Post.get(post.key)))
+  posts = await Promise.all(posts.map(async post => {
+    if (post.props.image.trim().length) {
+      post.props.image = await _getSignedUrl(post.image)
+    }
+
+    return post
+  }))
+
   return posts
 }
 
