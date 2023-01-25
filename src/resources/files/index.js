@@ -28,5 +28,16 @@ router.post('/presign', async (req, res) => {
   })
 })
 
+/**
+ * Get presigned url.
+ */
+router.post('/download', async (req, res) => {
+  const url = await getSignedUrl(s3, {
+    Bucket: bucketName,
+    Key: `uploads/${req.body.key}`,
+  })
+
+  res.send(url)
+})
 
 export default router
