@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 
 import db from '../../db/index.js'
-import { _getSignedUrl } from '../../utils/s3.js'
+import { _createPresignedPost, _getSignedUrl } from '../../utils/s3.js'
 
 const Post = db.collection('updates')
 
@@ -27,10 +27,14 @@ export const create = async (data) => {
  */
 export const list = async (limit, page) => {
   let posts = await Post.list()
+
+  // Get all fields.
   posts = await Promise.all(posts.results.map(post => Post.get(post.key)))
+
+  // Generate image urls.
   posts = await Promise.all(posts.map(async post => {
     if (post.props.image.trim().length) {
-      post.props.image = await _getSignedUrl(post.image)
+      post.props.image = await _getSignedUrl(post.props.image)
     }
 
     return post
@@ -45,7 +49,13 @@ export const list = async (limit, page) => {
  * @returns post
  */
 export const getByKey = async (key) => {
-  const post = await Post.get(key)
+  let post = await Post.get(key)
+
+  // Generate image url.
+  if (post.props.image.trim().length) {
+    post.props.image = await _createPresignedPost(post.props.image)
+  }
+
   return post
 } 
 
