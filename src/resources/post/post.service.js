@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 
 import db from '../../db/index.js'
-import { _createPresignedPost, _getSignedUrl } from '../../utils/s3.js'
+import {  _getSignedUrl } from '../../utils/s3.js'
 
 const Post = db.collection('updates')
 
@@ -53,7 +53,7 @@ export const getByKey = async (key) => {
 
   // Generate image url.
   if (post.props.image.trim().length) {
-    post.props.image = await _createPresignedPost(post.props.image)
+    post.props.image = await _getSignedUrl(post.props.image)
   }
 
   return post
