@@ -40,6 +40,9 @@ export const list = async (limit, page) => {
     return post
   }))
 
+  // Sort posts.
+  posts = posts.sort((a, b) => b.props.published - a.props.published)
+
   return posts
 }
 
