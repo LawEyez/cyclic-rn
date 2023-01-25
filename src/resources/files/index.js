@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { S3Client } from '@aws-sdk/client-s3'
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 // Init router.
 const router = Router()
@@ -32,10 +32,10 @@ router.post('/presign', async (req, res) => {
  * Get presigned url.
  */
 router.post('/download', async (req, res) => {
-  const url = await getSignedUrl(s3, {
+  const url = await getSignedUrl(s3, new GetObjectCommand({
     Bucket: bucketName,
-    Key: `uploads/${req.body.key}`,
-  })
+    Key: req.body.key,
+  }))
 
   res.send(url)
 })
