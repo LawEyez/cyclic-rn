@@ -1,7 +1,8 @@
 import { v4 } from 'uuid'
 
 import db from '../../db/index.js'
-import {  _getSignedUrl } from '../../utils/s3.js'
+import isEmpty from '../../utils/isEmpty.js'
+import {  deleteFile, _getSignedUrl } from '../../utils/s3.js'
 
 const Post = db.collection('updates')
 
@@ -33,7 +34,7 @@ export const list = async (limit, page) => {
 
   // Generate image urls.
   posts = await Promise.all(posts.map(async post => {
-    if (post.props.image?.trim().length) {
+    if (!isEmpty(post.props.image)) {
       post.props.image = await _getSignedUrl(post.props.image)
     }
 
@@ -55,7 +56,7 @@ export const getByKey = async (key) => {
   let post = await Post.get(key)
 
   // Generate image url.
-  if (post.props.image?.trim().length) {
+  if (!isEmpty(post.props.image)) {
     post.props.image = await _getSignedUrl(post.props.image)
   }
 
@@ -68,6 +69,10 @@ export const getByKey = async (key) => {
  * @returns post
  */
 export const deleteByKey = async (key) => {
-  const post = await Post.delete(key)
+  const post = await Post.get(key)
+  await Post.delete(key)
+  if (!isEmpty(post.props.image)) {
+    await deleteFile(post.props.image)
+  }
   return post
 } 
